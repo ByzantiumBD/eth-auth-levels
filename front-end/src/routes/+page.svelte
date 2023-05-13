@@ -80,6 +80,7 @@
 		font-size: 50px;
 		margin: 10px;
 		padding-bottom: 50px;
+		color: white;
 	}
 	.level {
 		background-color: #724ec3;
