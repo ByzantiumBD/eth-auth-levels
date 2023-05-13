@@ -9,6 +9,8 @@
     import type { Readable } from 'svelte/store';
 	import type { Contract } from 'web3-eth-contract';
 
+    import Popup from "./popup.svelte";
+
 
 	let counter = 0;
 	let contract: Contract;
@@ -81,24 +83,25 @@
 	</div>
 
 	<div id="page">
-		<div id="box">
-			<span id="counter">{counter}</span>
-			<button class="level" on:click={
-				()=>callLevel(1)
-			}>
-				<span style:margin="8px">Level 1</span>
-			</button>
-			<button class="level" on:click={
-				()=>callLevel(2)
-			}>
-				<span style:margin="8px">Level 2</span>
-			</button>
-			<button class="level" on:click={
-				()=>callLevel(3)
-			}>
-				<span style:margin="8px">Level 1 & 2</span>
-			</button>
-		</div>
+			<div id="box">
+				<span id="counter">{counter}</span>
+				<button class="level" on:click={
+					()=>callLevel(1)
+				}>
+					<span style:margin="8px">Level 1</span>
+				</button>
+				<button class="level" on:click={
+					()=>callLevel(2)
+				}>
+					<span style:margin="8px">Level 2</span>
+				</button>
+				<button class="level" on:click={
+					()=>callLevel(3)
+				}>
+					<span style:margin="8px">Level 1 & 2</span>
+				</button>
+			</div>
+		<button id="select">Select allowed levels</button>
 	</div>
 
 </div>
@@ -123,8 +126,9 @@
 	}
 	#wallet {
 		background-color: #724ec3;
+		font-weight: bold;
 		border: none;
-		padding: 12px;
+		padding: 12px 20px;
 		border-radius: 50px;
 	}
 	#page {
@@ -137,8 +141,9 @@
 	}
 	#counter {
 		font-size: 50px;
-		margin: 10px;
-		padding-bottom: 50px;
+		font-weight: bold;
+		margin: 5px;
+		padding: 15px 0;
 		color: white;
 	}
 	.level {
@@ -147,7 +152,7 @@
 		padding: 15px 25px;
 		border: none;
 		border-radius: 50px;
-		margin:10px;
+		margin:8px;
 		color: white;
 	}
 	#box {
@@ -159,5 +164,15 @@
 		width: 45vw;
 		padding: 20px;
 		border-radius: 50px;
+	}
+	#select {
+		background-color: #724ec3;
+		margin: 25px;
+		padding: 20px 30px;
+		font-size: 25px;
+		font-weight: bold;
+		color: #f1f1f1;
+		border-radius: 50px;
+		border: none;
 	}
 </style>
