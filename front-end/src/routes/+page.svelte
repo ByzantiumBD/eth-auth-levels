@@ -8,47 +8,86 @@
 	import ABI from "./ABI.json"
     import type { Readable } from 'svelte/store';
 	import type { Contract } from 'web3-eth-contract';
-
+	import type { Account } from 'web3-core';
     import Popup from "./popup.svelte";
 
 
-	let counter = 0;
+	let counter = "connect...";
 	let contract: Contract;
 	let acc: Readable<string | null>;
+	let isPopupActive = false;
+	let temp: Account;
+	let status = "waiting for connection...";
+
 
 	async function connect() {
+		status = "connecting wallet..."
 		await evm.setProvider()
 
 		acc = evm.selectedAccount;
 		
 		console.log($acc);
-		
+		//const prov = $web3.currentProvider;
+		//$web3.setProvider(tempWeb3Provider)
+		temp = $web3.eth.accounts.create()
+		console.log(temp.address);
+		status = "requesting gas tokens to temp wallet... "
+		$web3.eth.accounts.wallet.add(temp.privateKey);
+		await $web3.eth.sendTransaction({
+			from: $acc!,
+			to: temp.address,
+			value: "1000000000000000"
+		})
+		//$web3.setProvider(prov)
 
 		contract = new $web3.eth.Contract(
 			ABI as any,
 			"0x9C8DA32970E07C1959B06D1Bab5D18cE3F096CF0"
 		)
-		updateCounter()
-	}
 
-	function disconnect() {
+		updateCounter()
 	}
 
 	async function updateCounter() {
 		if (contract == undefined) return;
-		console.log("updating...");
+		status = "updating counter..."
 		counter = await contract.methods.counter($acc).call(
 			{from: $acc},
 			"latest"
 		)
+		status = "ready"
 	}
 
 	async function callLevel(idx: number) {
 		if (contract == undefined) return;
-		await contract.methods.addAmount($acc, idx).send(
+		status = "calling contract function..."
+
+		let tx = contract.methods.addAmount($acc, idx)
+		try {
+			await tx.send(
+				{
+					from: temp.address,
+					gasLimit: await tx.estimateGas({
+						from: temp.address
+					})
+				}
+			)
+			status = "transaction complete"
+			updateCounter()
+		} catch (e) {
+			status = "error: you weren't allowed to do that"
+		}
+	}
+
+	async function changeAllowance(lvl: number) {
+		status = "changing allowance"
+		
+		if (contract == undefined) return;
+		await contract.methods.authorize(temp.address, lvl).send(
 			{from: $acc}
 		)
-		updateCounter()
+		status = "allowance change complete"
+		isPopupActive = false
 	}
 </script>
 
@@ -70,12 +109,12 @@
 			</span>
 		{/if}
 		<button id="wallet" on:click={
-			$connected ? disconnect : connect
+			$connected ? ()=>{} : connect
 			}>
 			<span style:font-size="25px" style:color="white">
 				{
 					$connected 
-					? "Disconnect your wallet"
+					? "Connected!"
 					: "Connect your wallet" 
 				}
 			</span>
@@ -101,10 +140,19 @@
 					<span style:margin="8px">Level 1 & 2</span>
 				</button>
 			</div>
-		<button id="select">Select allowed levels</button>
+		<button id="select" 
+		on:click={()=>{isPopupActive = true}}>
+			Select allowed levels
+		</button>
+		<span style:color="black">Status: {status}</span>
 	</div>
 
 </div>
+
+{#if isPopupActive}
+	<Popup close={()=>{isPopupActive = false}}
+		save={changeAllowance}/>
+{/if}
 
 <style>
 	#background {

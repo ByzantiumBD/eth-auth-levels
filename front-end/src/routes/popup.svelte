@@ -1,5 +1,8 @@
 <script lang="ts">
-
+    export let close: ()=>void
+    export let save: (idx: number)=>void
+    let lvl1: boolean, lvl2: boolean, lvl3: boolean;
+    $: n = (lvl1?1:0) + 2*(lvl2?1:0) + 4*(lvl3?1:0);
 </script>
 
 <div id="backgroundup">
@@ -8,24 +11,24 @@
         <span id="choose">Choose authorization level</span>
 
         <label class="checkmark">
-            <input type="checkbox">
+            <input type="checkbox" bind:checked={lvl1}>
             Level 1
         </label>
 
         <label class="checkmark">
-            <input type="checkbox">
+            <input type="checkbox" bind:checked={lvl2}>
             Level 2
         </label>
 
         <label class="checkmark">
-            <input type="checkbox">
+            <input type="checkbox" bind:checked={lvl3}>
             Level 3
         </label>
 
-        <button id="buttonup">OK</button>
+        <button id="buttonup" on:click={()=>save(n)}>OK</button>
     </div>
 
-    <button id="exit">Exit</button>
+    <button id="exit" on:click={close}>Exit</button>
 
 </div>
 
