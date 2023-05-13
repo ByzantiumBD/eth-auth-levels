@@ -1,28 +1,73 @@
 <script lang="ts">
+	import {
+		connected,
+		chainId,
+		defaultEvmStores as evm,
+		makeContractStore,
+	} from 'svelte-web3'
+	import ABI from "./ABI.json"
+    import type { Readable } from 'svelte/store';
+	import type { Contract } from 'web3-eth-contract';
 
-	let connected= false;
-	let counter= 0
 
-    function connect() {
-        connected = true;
-    }
-    function disconnect() {
-        connected = false;
-    }
+	let counter = 0;
+	let contract: Readable<Contract>;
+	let acc: Readable<string | null>;
 
+	function connect() {
+		evm.setProvider()
+		contract = makeContractStore(
+			ABI,
+			"0x9C8DA32970E07C1959B06D1Bab5D18cE3F096CF0"
+		)
+		acc = evm.selectedAccount;
+	}
+
+	function disconnect() {
+	}
+
+	function updateCounter() {
+		$contract!.methods.counter($acc).call.then(
+			(v: number) =>{ counter = v }
+		)
+	}
+
+	function callLevel(idx: number) {
+		$contract!.methods.addAmount(idx).send(
+			{from: $acc}
+		).once(
+			"confirmation",
+			updateCounter
+		)
+	}
 </script>
 
 <div id="background">
 
 	<div id="top_bar">
+		<span style:font-size="25px">
+			{
+				$connected
+				? $chainId === 80001
+					? "Connected"
+					: ""
+				: "Connect with an injected provider"
+			}
+		</span>
+		{#if $connected && $chainId !== 80001}
+			<span style:font-size="25px">
+				Please switch to Mumbai testnet
+			</span>
+		{/if}
 		<button id="wallet" on:click={
-			connected ? disconnect : connect
+			$connected ? disconnect : connect
 			}>
 			<span style:font-size="25px" style:color="white">
 				{
-					connected 
+					$connected 
 					? "Disconnect your wallet"
-					: "Connect your wallet" }
+					: "Connect your wallet" 
+				}
 			</span>
 		</button>
 	</div>
@@ -30,13 +75,19 @@
 	<div id="page">
 		<div id="box">
 			<span id="counter">{counter}</span>
-			<button class="level">
+			<button class="level" on:click={
+				()=>callLevel(1)
+			}>
 				<span style:margin="8px">Level 1</span>
 			</button>
-			<button class="level">
+			<button class="level" on:click={
+				()=>callLevel(2)
+			}>
 				<span style:margin="8px">Level 2</span>
 			</button>
-			<button class="level">
+			<button class="level" on:click={
+				()=>callLevel(3)
+			}>
 				<span style:margin="8px">Level 1 & 2</span>
 			</button>
 		</div>
@@ -51,11 +102,11 @@
 		background-color: #f1f1f1;
 		width: 100%;
 		height: 100%;
+		color: white;
 	}
 	#top_bar {
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
+		justify-content:space-between;
 		align-items: center;
 		align-self: flex-start;
 		background-color: #352163;
