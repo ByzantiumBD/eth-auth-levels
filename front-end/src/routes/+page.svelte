@@ -37,7 +37,7 @@
 				<span style:margin="8px">Level 2</span>
 			</button>
 			<button class="level">
-				<span style:margin="8px">Level 3</span>
+				<span style:margin="8px">Level 1 & 2</span>
 			</button>
 		</div>
 	</div>
