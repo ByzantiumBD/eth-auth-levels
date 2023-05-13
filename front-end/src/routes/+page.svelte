@@ -3,7 +3,7 @@
 		connected,
 		chainId,
 		defaultEvmStores as evm,
-		makeContractStore,
+		web3
 	} from 'svelte-web3'
 	import ABI from "./ABI.json"
     import type { Readable } from 'svelte/store';
@@ -11,34 +11,42 @@
 
 
 	let counter = 0;
-	let contract: Readable<Contract>;
+	let contract: Contract;
 	let acc: Readable<string | null>;
 
-	function connect() {
-		evm.setProvider()
-		contract = makeContractStore(
-			ABI,
+	async function connect() {
+		await evm.setProvider()
+
+		acc = evm.selectedAccount;
+		
+		console.log($acc);
+		
+
+		contract = new $web3.eth.Contract(
+			ABI as any,
 			"0x9C8DA32970E07C1959B06D1Bab5D18cE3F096CF0"
 		)
-		acc = evm.selectedAccount;
+		updateCounter()
 	}
 
 	function disconnect() {
 	}
 
-	function updateCounter() {
-		$contract!.methods.counter($acc).call.then(
-			(v: number) =>{ counter = v }
+	async function updateCounter() {
+		if (contract == undefined) return;
+		console.log("updating...");
+		counter = await contract.methods.counter($acc).call(
+			{from: $acc},
+			"latest"
 		)
 	}
 
-	function callLevel(idx: number) {
-		$contract!.methods.addAmount(idx).send(
+	async function callLevel(idx: number) {
+		if (contract == undefined) return;
+		await contract.methods.addAmount($acc, idx).send(
 			{from: $acc}
-		).once(
-			"confirmation",
-			updateCounter
 		)
+		updateCounter()
 	}
 </script>
 
