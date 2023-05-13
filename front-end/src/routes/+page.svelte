@@ -75,24 +75,25 @@
 	</div>
 
 	<div id="page">
-		<div id="box">
-			<span id="counter">{counter}</span>
-			<button class="level" on:click={
-				()=>callLevel(1)
-			}>
-				<span style:margin="8px">Level 1</span>
-			</button>
-			<button class="level" on:click={
-				()=>callLevel(2)
-			}>
-				<span style:margin="8px">Level 2</span>
-			</button>
-			<button class="level" on:click={
-				()=>callLevel(3)
-			}>
-				<span style:margin="8px">Level 1 & 2</span>
-			</button>
-		</div>
+			<div id="box">
+				<span id="counter">{counter}</span>
+				<button class="level" on:click={
+					()=>callLevel(1)
+				}>
+					<span style:margin="8px">Level 1</span>
+				</button>
+				<button class="level" on:click={
+					()=>callLevel(2)
+				}>
+					<span style:margin="8px">Level 2</span>
+				</button>
+				<button class="level" on:click={
+					()=>callLevel(3)
+				}>
+					<span style:margin="8px">Level 1 & 2</span>
+				</button>
+			</div>
+		<button id="select">Select allowed levels</button>
 	</div>
 
 </div>
@@ -117,8 +118,9 @@
 	}
 	#wallet {
 		background-color: #724ec3;
+		font-weight: bold;
 		border: none;
-		padding: 12px;
+		padding: 12px 20px;
 		border-radius: 50px;
 	}
 	#page {
@@ -154,5 +156,15 @@
 		width: 45vw;
 		padding: 20px;
 		border-radius: 50px;
+	}
+	#select {
+		background-color: #724ec3;
+		margin: 25px;
+		padding: 20px 30px;
+		font-size: 25px;
+		font-weight: bold;
+		color: #f1f1f1;
+		border-radius: 50px;
+		border: none;
 	}
 </style>
