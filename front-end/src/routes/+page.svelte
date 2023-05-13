@@ -1,29 +1,45 @@
 <script lang="ts">
 
+	let connected= false;
 	let counter= 0
+
+    function connect() {
+        connected = true;
+    }
+    function disconnect() {
+        connected = false;
+    }
+
 </script>
 
 <div id="background">
 
 	<div id="top_bar">
-		<button id="wallet">
+		<button id="wallet" on:click={
+			connected ? disconnect : connect
+			}>
 			<span style:font-size="25px" style:color="white">
-				Connect your wallet
+				{
+					connected 
+					? "Disconnect your wallet"
+					: "Connect your wallet" }
 			</span>
 		</button>
 	</div>
 
 	<div id="page">
-		<span id="counter">{counter}</span>
-		<button class="level">
-			<span style:margin="8px">Level 1</span>
-		</button>
-		<button class="level">
-			<span style:margin="8px">Level 2</span>
-		</button>
-		<button class="level">
-			<span style:margin="8px">Level 3</span>
-		</button>
+		<div id="box">
+			<span id="counter">{counter}</span>
+			<button class="level">
+				<span style:margin="8px">Level 1</span>
+			</button>
+			<button class="level">
+				<span style:margin="8px">Level 2</span>
+			</button>
+			<button class="level">
+				<span style:margin="8px">Level 3</span>
+			</button>
+		</div>
 	</div>
 
 </div>
@@ -63,6 +79,7 @@
 	#counter {
 		font-size: 50px;
 		margin: 10px;
+		padding-bottom: 50px;
 	}
 	.level {
 		background-color: #724ec3;
@@ -72,5 +89,15 @@
 		border-radius: 50px;
 		margin:10px;
 		color: white;
+	}
+	#box {
+		display:flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background-color: #352163;
+		width: 45vw;
+		padding: 20px;
+		border-radius: 50px;
 	}
 </style>
