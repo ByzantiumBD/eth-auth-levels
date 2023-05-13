@@ -9,6 +9,8 @@
     import type { Readable } from 'svelte/store';
 	import type { Contract } from 'web3-eth-contract';
 
+    import Popup from "./popup.svelte";
+
 
 	let counter = 0;
 	let contract: Readable<Contract>;
@@ -129,8 +131,9 @@
 	}
 	#counter {
 		font-size: 50px;
-		margin: 10px;
-		padding-bottom: 50px;
+		font-weight: bold;
+		margin: 5px;
+		padding: 15px 0;
 		color: white;
 	}
 	.level {
@@ -139,7 +142,7 @@
 		padding: 15px 25px;
 		border: none;
 		border-radius: 50px;
-		margin:10px;
+		margin:8px;
 		color: white;
 	}
 	#box {
