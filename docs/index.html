@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="./favicon.png" />
+		<meta name="viewport" content="width=device-width" />
+		<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+		<meta http-equiv="content-security-policy" content="">
+		<link href="./_app/immutable/assets/0.0db8a472.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/2.449caa0d.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.76d20296.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.19edaee0.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.d2dfc09b.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.e232583f.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.563dcf2a.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.d3903fe6.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.f2bff71c.js">
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">
+
+
+<div class="app svelte-1td6h32"><main class="svelte-1td6h32"><div id="background" class="svelte-48aq2p"><div id="top_bar" class="svelte-48aq2p"><span style="font-size: 25px;">Connect with an injected provider</span>
+		
+		<button id="wallet" class="svelte-48aq2p"><span style="font-size: 25px; color: white;">Connect your wallet</span></button></div>
+
+	<div id="page" class="svelte-48aq2p"><div id="box" class="svelte-48aq2p"><span id="counter" class="svelte-48aq2p">connect...</span>
+				<button class="level svelte-48aq2p"><span style="margin: 8px;">Level 1</span></button>
+				<button class="level svelte-48aq2p"><span style="margin: 8px;">Level 2</span></button>
+				<button class="level svelte-48aq2p"><span style="margin: 8px;">Level 1 &amp; 2</span></button></div>
+		<button id="select" class="svelte-48aq2p">Select allowed levels
+		</button>
+		<span style="color: black;">Status: waiting for connection...</span></div></div>
+
+</main>
+</div>
+
+
+			
+			<script>
+				{
+					__sveltekit_11ukq8p = {
+						base: new URL(".", location).pathname.slice(0, -1),
+						env: {}
+					};
+
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null];
+
+					Promise.all([
+						import("./_app/immutable/entry/start.76d20296.js"),
+						import("./_app/immutable/entry/app.563dcf2a.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 2],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
